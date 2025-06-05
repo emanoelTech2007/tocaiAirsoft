@@ -10,15 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Comportamento de rolagem suave para âncoras */
         html { scroll-behavior: smooth; }
 
-        /* Hamburglar styles */
+        /* Estilos para o ícone do hamburguer (menu mobile) */
         .hamburglar {
             position: relative;
             width: 68px;
             height: 68px;
             cursor: pointer;
-            z-index: 50;
+            z-index: 50; /* Garante que o hamburguer esteja acima do menu mobile */
         }
 
         .burger-icon {
@@ -51,6 +52,7 @@
         .burger-filling { top: 12px; }
         .burger-bun-bot { bottom: 0; }
 
+        /* Animação do hamburguer para X */
         .is-open .burger-bun-top {
             transform: translateY(12px) rotate(45deg);
         }
@@ -63,25 +65,26 @@
             opacity: 0;
         }
 
+        /* Esconde o hamburguer em telas maiores e exibe o menu normal */
         @media (min-width: 768px) {
             .hamburglar {
                 display: none;
             }
 
             #mobileMenu {
-                display: none !important;
+                display: none !important; /* Esconde o menu mobile em telas maiores */
                 position: static !important;
                 transform: none !important;
             }
         }
 
-        /* Estilos para o slider */
+        /* Estilos para o slider de imagens na seção Início */
         .slider-container {
             position: relative;
             overflow: hidden;
             width: 100%;
             height: 400px; /* Altura fixa para o slider */
-            border-radius: 0.75rem; /* rounded-xl */
+            border-radius: 0.75rem; /* rounded-xl do Tailwind */
         }
 
         .slider-wrapper {
@@ -99,23 +102,27 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2.5rem; /* text-4xl */
+            font-size: 2.5rem; /* text-4xl do Tailwind */
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Sombra no texto para melhor legibilidade */
         }
 
         .slider-nav button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente para os botões */
             color: white;
             border: none;
             padding: 10px 15px;
             cursor: pointer;
             z-index: 20;
-            border-radius: 9999px; /* full rounded */
+            border-radius: 9999px; /* rounded-full do Tailwind */
             font-size: 1.5rem;
+            transition: background-color 0.3s ease; /* Transição suave no hover */
+        }
+        .slider-nav button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
         .slider-nav .prev { left: 10px; }
@@ -134,17 +141,17 @@
         .slider-dot {
             width: 12px;
             height: 12px;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.5); /* Cor dos dots inativos */
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .slider-dot.active {
-            background-color: #3B82F6; /* blue-500 */
+            background-color: #3B82F6; /* blue-500 do Tailwind - cor do dot ativo */
         }
 
-        /* Estilos para o FAQ */
+        /* Estilos para o FAQ (Accordion) */
         .accordion-header {
             cursor: pointer;
             padding: 1rem;
@@ -154,31 +161,32 @@
             justify-content: space-between;
             align-items: center;
             transition: background-color 0.3s ease;
+            position: relative; /* Adicionado */
+            z-index: 2; /* Adicionado */
         }
         .accordion-header:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
         .accordion-content {
-            max-height: 0;
+            max-height: 0; /* Começa escondido */
             overflow: hidden;
-            transition: max-height 0.5s ease-out;
-            padding: 0 1rem;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1rem; /* Mantém o padding horizontal, padding vertical será controlado pelo JS */
             background-color: rgba(0, 0, 0, 0.4);
             border-bottom-left-radius: 0.5rem;
             border-bottom-right-radius: 0.5rem;
         }
-        .accordion-item.active .accordion-content {
-            max-height: 200px; /* Ajusta ai conforme tu achar necessário para o conteúdo */
-            padding: 1rem;
-        }
+        /* A regra .accordion-item.active .accordion-content foi removida daqui, 
+           pois o JavaScript agora define max-height e padding-top/bottom dinamicamente. */
+        
         .accordion-item.active .arrow-icon {
-            transform: rotate(180deg);
+            transform: rotate(180deg); /* Gira a seta quando o item está ativo */
         }
         .arrow-icon {
             transition: transform 0.3s ease;
         }
 
-        /* Aqui é as Fontes */
+        /* Definição das fontes para uso no Tailwind */
         .font-oswald { font-family: 'Oswald', sans-serif; }
         .font-roboto { font-family: 'Roboto', sans-serif; }
     </style>
@@ -196,12 +204,12 @@
                 </div>
 
                 <div class="hidden md:flex gap-6">
-                    <button onclick="showPage('home', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Início</button>
-                    <button onclick="showPage('sobre', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Sobre</button>
-                    <button onclick="showPage('precos', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Preços</button>
-                    <button onclick="showPage('galeria', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Galeria</button>
-                    <button onclick="showPage('faq', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">FAQ</button>
-                    <button onclick="showPage('contato', this)" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Contato</button>
+                    <button id="nav-home" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200" aria-current="page">Início</button>
+                    <button id="nav-sobre" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Sobre</button>
+                    <button id="nav-precos" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Preços</button>
+                    <button id="nav-galeria" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Galeria</button>
+                    <button id="nav-faq" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">FAQ</button>
+                    <button id="nav-contato" class="nav-button text-white hover:text-blue-400 pb-1 transition-colors duration-200">Contato</button>
                 </div>
 
                 <div id="hamburglarBtn" class="hamburglar md:hidden" aria-label="Abrir ou fechar menu" aria-expanded="false">
@@ -215,22 +223,22 @@
                 </div>
 
                 <div id="mobileMenu" class="md:hidden fixed top-0 left-0 w-full h-screen bg-black bg-opacity-95 backdrop-blur-lg transform -translate-y-full transition-transform duration-300 flex flex-col items-center space-y-6 pt-24 z-40">
-                    <button onclick="showPage('home', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Início</button>
-                    <button onclick="showPage('sobre', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Sobre</button>
-                    <button onclick="showPage('precos', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Preços</button>
-                    <button onclick="showPage('galeria', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Galeria</button>
-                    <button onclick="showPage('faq', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">FAQ</button>
-                    <button onclick="showPage('contato', this)" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Contato</button>
+                    <button id="mobile-nav-home" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200" aria-current="page">Início</button>
+                    <button id="mobile-nav-sobre" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Sobre</button>
+                    <button id="mobile-nav-precos" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Preços</button>
+                    <button id="mobile-nav-galeria" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Galeria</button>
+                    <button id="mobile-nav-faq" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">FAQ</button>
+                    <button id="mobile-nav-contato" class="text-xl nav-button text-white hover:text-blue-400 transition-colors duration-200">Contato</button>
                 </div>
             </nav>
         </header>
 
         <main class="max-w-5xl mx-auto px-4 py-10 space-y-20 flex-grow">
-            <section id="home" class="bg-black/60 rounded-xl p-6 shadow-lg text-center">
+            <section id="home" class="bg-black/60 rounded-xl p-6 shadow-lg" role="main">
                 <h1 class="text-6xl md:text-7xl font-oswald font-extrabold mb-4 leading-tight">Tocaia Airsoft</h1>
                 <p class="italic text-gray-300 text-lg md:text-xl mb-8">"Sua Adrenalina Começa Aqui. Venha Vencer Suas Guerras!"</p>
 
-                <div class="slider-container mx-auto max-w-full">
+                <div class="slider-container mx-auto max-w-full" aria-live="polite">
                     <div class="slider-wrapper" id="sliderWrapper">
                         <div class="slider-slide" style="background-image: url('https://img.freepik.com/fotos-gratis/homem-militar-com-rifle-de-airsoft_23-2148784143.jpg');">
                             <span class="hidden md:block">Pronto para a Ação?</span>
@@ -243,17 +251,17 @@
                         </div>
                     </div>
                     <div class="slider-nav">
-                        <button class="prev">&lt;</button>
-                        <button class="next">&gt;</button>
+                        <button class="prev" aria-label="Slide anterior">&lt;</button>
+                        <button class="next" aria-label="Próximo slide">&gt;</button>
                     </div>
-                    <div class="slider-dots" id="sliderDots">
-                        </div>
+                    <div class="slider-dots" id="sliderDots" aria-label="Navegação do slider">
+                    </div>
                 </div>
 
                 <p class="text-lg mt-8 text-gray-200">
                     No Tocaia Airsoft, cada partida é uma nova aventura. Prepare-se para testar suas habilidades, sua estratégia e seu trabalho em equipe em um campo projetado para a máxima imersão.
                 </p>
-                <button onclick="showPage('precos', this)" class="mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                <button id="call-to-action-precos" class="mt-8 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
                     Veja Nossos Preços e Reserve Já!
                 </button>
             </section>
@@ -266,28 +274,28 @@
 
                 <div class="grid md:grid-cols-2 gap-8 mt-8">
                     <div class="bg-black/40 p-5 rounded-lg flex items-start gap-4">
-                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/military-base.png" alt="Campo de Batalha" class="h-10 w-10 mt-1"/>
+                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/military-base.png" alt="Campo de Batalha Ícone" class="h-10 w-10 mt-1"/>
                         <div>
                             <h3 class="text-2xl font-bold text-blue-400 mb-2">Campo Imersivo</h3>
                             <p class="text-gray-300">Navegue por trincheiras, fortificações e áreas de mata densa. Cada canto do Tocaia é um novo desafio estratégico, ideal para todos os níveis de jogadores.</p>
                         </div>
                     </div>
                     <div class="bg-black/40 p-5 rounded-lg flex items-start gap-4">
-                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/weapon.png" alt="Equipamentos" class="h-10 w-10 mt-1"/>
+                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/weapon.png" alt="Equipamentos Ícone" class="h-10 w-10 mt-1"/>
                         <div>
                             <h3 class="text-2xl font-bold text-blue-400 mb-2">Equipamentos de Ponta</h3>
                             <p class="text-gray-300">Oferecemos aluguel de equipamentos de última geração, garantindo segurança e desempenho máximo em suas partidas. Qualidade que você pode confiar!</p>
                         </div>
                     </div>
                     <div class="bg-black/40 p-5 rounded-lg flex items-start gap-4">
-                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/medal.png" alt="Eventos" class="h-10 w-10 mt-1"/>
+                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/medal.png" alt="Eventos Ícone" class="h-10 w-10 mt-1"/>
                         <div>
                             <h3 class="text-2xl font-bold text-blue-400 mb-2">Eventos e Torneios</h3>
                             <p class="text-gray-300">Participe de nossos eventos mensais e torneios especiais. Desafie-se, faça novas amizades e concorra a prêmios!</p>
                         </div>
                     </div>
                     <div class="bg-black/40 p-5 rounded-lg flex items-start gap-4">
-                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/security-shield.png" alt="Segurança" class="h-10 w-10 mt-1"/>
+                        <img src="https://img.icons8.com/ios-filled/50/4A90E2/security-shield.png" alt="Segurança Ícone" class="h-10 w-10 mt-1"/>
                         <div>
                             <h3 class="text-2xl font-bold text-blue-400 mb-2">Segurança em Primeiro Lugar</h3>
                             <p class="text-gray-300">Priorizamos a segurança de todos os jogadores. Briefings detalhados e supervisão constante garantem uma experiência divertida e protegida.</p>
@@ -309,9 +317,9 @@
                             <li><span class="text-blue-400">✓</span> Diversão garantida!</li>
                             <li><span class="text-gray-500">✗</span> Não inclui equipamento</li>
                         </ul>
-                        <button onclick="showPage('contato', this)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full">
+                        <a href="https://wa.me/5595981204139?text=Ol%C3%A1!%20Eu%20gostaria%20de%20ter%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20plano%20Partida%20Avulsa." target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full text-center">
                             Agendar Partida
-                        </button>
+                        </a>
                     </div>
 
                     <div class="bg-black/40 rounded-xl p-6 flex flex-col items-center border-2 border-blue-700 shadow-lg transform hover:scale-105 transition-transform duration-300">
@@ -322,9 +330,9 @@
                             <li><span class="text-blue-400">✓</span> Participe de todos os eventos</li>
                             <li><span class="text-gray-500">✗</span> Não inclui equipamento</li>
                         </ul>
-                        <button onclick="showPage('contato', this)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full">
+                        <a href="https://wa.me/5595981204139?text=Ol%C3%A1!%20Eu%20gostaria%20de%20ter%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20plano%20Plano%20Mensal." target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full text-center">
                             Assinar Plano
-                        </button>
+                        </a>
                     </div>
 
                     <div class="bg-black/40 rounded-xl p-6 flex flex-col items-center border border-blue-600 shadow-md transform hover:scale-105 transition-transform duration-300">
@@ -335,9 +343,9 @@
                             <li><span class="text-blue-400">✓</span> Proteção facial e óculos</li>
                             <li><span class="text-blue-400">✓</span> 100 BBs inclusas</li>
                         </ul>
-                        <button onclick="showPage('contato', this)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full">
+                        <a href="https://wa.me/5595981204139?text=Ol%C3%A1!%20Eu%20gostaria%20de%20ter%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20Aluguel%20de%20Equipamento." target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full w-full text-center">
                             Incluir Equipamento
-                        </button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -347,17 +355,17 @@
                 <p class="text-lg text-gray-300 mb-8 text-center">Confira a adrenalina e a diversão das nossas partidas! Prepare-se para a ação.</p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-jogando-airsoft_23-2148784145.jpg" alt="Airsoft 1" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-jogando-airsoft_23-2148784145.jpg')">
-                    <img src="https://img.freepik.com/fotos-gratis/soldado-de-tiro-medio-com-arma_23-2150804321.jpg" alt="Airsoft 2" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/soldado-de-tiro-medio-com-arma_23-2150804321.jpg')">
-                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-de-airsoft_23-2148784138.jpg" alt="Airsoft 3" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/tiro-medio-de-homem-militar_23-2148784142.jpg')">
-                    <img src="https://img.freepik.com/fotos-gratis/tiro-medio-homem-militar-de-airsoft_23-2148784136.jpg" alt="Airsoft 4" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/tiro-medio-homem-militar-de-airsoft_23-2148784136.jpg')">
-                    <img src="https://img.freepik.com/fotos-gratis/homem-militar-com-rifle-de-airsoft_23-2148784143.jpg" alt="Airsoft 5" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/homem-militar-com-rifle-de-airsoft_23-2148784143.jpg')">
-                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-de-homem-militar-jogando-airsoft_23-2148784139.jpg" alt="Airsoft 6" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="openModal('https://img.freepik.com/fotos-gratis/vista-traseira-de-homem-militar-jogando-airsoft_23-2148784139.jpg')">
+                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-jogando-airsoft_23-2148784145.jpg" alt="Jogador de Airsoft em ação" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-jogando-airsoft_23-2148784145.jpg">
+                    <img src="https://img.freepik.com/fotos-gratis/soldado-de-tiro-medio-com-arma_23-2150804321.jpg" alt="Soldado com arma de Airsoft" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/soldado-de-tiro-medio-com-arma_23-2150804321.jpg">
+                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-de-airsoft_23-2148784138.jpg" alt="Jogador de Airsoft na floresta" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/vista-traseira-do-soldado-de-airsoft_23-2148784138.jpg">
+                    <img src="https://img.freepik.com/fotos-gratis/tiro-medio-homem-militar-de-airsoft_23-2148784136.jpg" alt="Militar com equipamento de Airsoft" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/tiro-medio-homem-militar-de-airsoft_23-2148784136.jpg">
+                    <img src="https://img.freepik.com/fotos-gratis/homem-militar-com-rifle-de-airsoft_23-2148784143.jpg" alt="Homem militar com rifle" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/homem-militar-com-rifle-de-airsoft_23-2148784143.jpg">
+                    <img src="https://img.freepik.com/fotos-gratis/vista-traseira-de-homem-militar-jogando-airsoft_23-2148784139.jpg" alt="Militar jogando Airsoft de costas" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer" role="button" tabindex="0" data-full-src="https://img.freepik.com/fotos-gratis/vista-traseira-de-homem-militar-jogando-airsoft_23-2148784139.jpg">
                 </div>
 
-                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center hidden">
+                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                     <div class="relative max-w-3xl w-full mx-4 p-4 bg-black rounded-lg">
-                        <button class="absolute top-2 right-4 text-white text-5xl font-bold hover:text-blue-400" onclick="closeModal()">&times;</button>
+                        <h2 id="modalTitle" class="sr-only">Imagem Ampliada</h2> <button class="absolute top-2 right-4 text-white text-5xl font-bold hover:text-blue-400" onclick="galleryModal.close()" aria-label="Fechar modal">&times;</button>
                         <img id="modalImage" src="" alt="Imagem Ampliada" class="w-full h-auto max-h-[80vh] object-contain rounded-lg">
                     </div>
                 </div>
@@ -369,93 +377,78 @@
 
                 <div class="space-y-4">
                     <div class="accordion-item">
-                        <div class="accordion-header text-xl font-semibold">
+                        <div class="accordion-header text-xl font-semibold" role="button" aria-expanded="false" tabindex="0">
                             <span>O que é Airsoft?</span>
                             <span class="arrow-icon">&#9660;</span>
                         </div>
-                        <div class="accordion-content">
+                        <div class="accordion-content" role="region">
                             <p class="text-gray-300 pt-4">Airsoft é um esporte de simulação militar onde os participantes usam réplicas de armas de fogo que disparam pequenas esferas plásticas (BBs). É focado em estratégia, trabalho em equipe e simulação de combate, com ênfase na honra dos jogadores em reconhecer quando são atingidos.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
-                        <div class="accordion-header text-xl font-semibold">
+                        <div class="accordion-header text-xl font-semibold" role="button" aria-expanded="false" tabindex="0">
                             <span>Preciso ter meu próprio equipamento?</span>
                             <span class="arrow-icon">&#9660;</span>
                         </div>
-                        <div class="accordion-content">
+                        <div class="accordion-content" role="region">
                             <p class="text-gray-300 pt-4">Não! Oferecemos planos com aluguel de equipamento completo (réplica, óculos de proteção, máscara e BBs) para você começar a jogar sem preocupações. Se você já tem o seu, basta pagar a taxa de acesso ao campo.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
-                        <div class="accordion-header text-xl font-semibold">
+                        <div class="accordion-header text-xl font-semibold" role="button" aria-expanded="false" tabindex="0">
                             <span>Existe alguma idade mínima para jogar?</span>
                             <span class="arrow-icon">&#9660;</span>
                         </div>
-                        <div class="accordion-content">
+                        <div class="accordion-content" role="region">
                             <p class="text-gray-300 pt-4">Sim, a idade mínima para participar é de 18 anos. Para menores de idade (a partir de 14 anos), é obrigatória a apresentação de autorização dos pais ou responsáveis legais e a presença de um responsável no campo durante a partida.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
-                        <div class="accordion-header text-xl font-semibold">
+                        <div class="accordion-header text-xl font-semibold" role="button" aria-expanded="false" tabindex="0">
                             <span>Quais são os dias e horários de funcionamento?</span>
                             <span class="arrow-icon">&#9660;</span>
                         </div>
-                        <div class="accordion-content">
+                        <div class="accordion-content" role="region">
                             <p class="text-gray-300 pt-4">Nosso campo está aberto aos sábados e domingos, das 09h às 18h. Para agendamentos em dias de semana ou grupos fechados, por favor, entre em contato via WhatsApp para verificar a disponibilidade.</p>
                         </div>
                     </div>
 
-                    <div class="accordion-header text-xl font-semibold">
-                        <span>Preciso agendar minha partida?</span>
-                        <span class="arrow-icon">&#9660;</span>
-                    </div>
-                    <div class="accordion-content">
-                        <p class="text-gray-300 pt-4">Recomendamos fortemente o agendamento prévio, especialmente para grupos. Isso garante a disponibilidade do campo e dos equipamentos, otimizando sua experiência. Basta entrar em contato conosco pelo WhatsApp.</p>
+                    <div class="accordion-item">
+                        <div class="accordion-header text-xl font-semibold" role="button" aria-expanded="false" tabindex="0">
+                            <span>Preciso agendar minha partida?</span>
+                            <span class="arrow-icon">&#9660;</span>
+                        </div>
+                        <div class="accordion-content" role="region">
+                            <p class="text-gray-300 pt-4">Recomendamos fortemente o agendamento prévio, especialmente para grupos. Isso garante a disponibilidade do campo e dos equipamentos, otimizando sua experiência. Basta entrar em contato conosco pelo WhatsApp.</p>
+                        </div>
                     </div>
                 </div>
             </section>
-
 
             <section id="contato" class="hidden bg-black/60 rounded-xl p-6 shadow-lg">
                 <h2 class="text-4xl font-oswald font-bold mb-8 text-center">Entre em Contato</h2>
                 <p class="text-lg text-gray-300 mb-8 text-center">Ficou com alguma dúvida ou quer agendar sua partida? Fale conosco!</p>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-black/40 p-6 rounded-lg shadow-md">
+                <div class="flex flex-col items-center gap-8">
+                    <div class="bg-black/40 p-6 rounded-lg shadow-md w-full max-w-md text-center">
                         <h3 class="text-2xl font-oswald font-bold text-blue-400 mb-4">Fale Conosco Diretamente</h3>
-                        <p class="mb-3 text-lg"><strong>WhatsApp:</strong> <a href="https://wa.me/5595981204139" class="text-blue-400 hover:underline">(95) 98120-4139</a></p>
-                        <p class="mb-3 text-lg"><strong>Instagram:</strong> <a href="https://instagram.com/tocaiarsoft_rr" class="text-blue-400 hover:underline">@tocaiarsoft_rr</a></p>
+                        <p class="mb-4 text-lg">Pronto para a ação? Clique no botão abaixo e fale conosco via WhatsApp para agendar sua partida ou tirar dúvidas!</p>
+                        
+                        <a href="https://wa.me/5595981204139?text=Ol%C3%A1!%20Eu%20gostaria%20de%20agendar%20uma%20partida%20ou%20ter%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20Tocaia%20Airsoft." 
+                            target="_blank" 
+                            class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 mb-6 text-xl">
+                            <img src="https://img.icons8.com/color/48/ffffff/whatsapp--v1.png" alt="Ícone do WhatsApp" class="inline-block w-6 h-6 mr-2">
+                            Chamar no WhatsApp
+                        </a>
+
+                        <p class="mb-3 text-lg"><strong>Instagram:</strong> <a href="https://instagram.com/tocaiairsoft_rr" class="text-blue-400 hover:underline" target="_blank">@tocaiarsoft_rr</a></p>
                         <p class="mb-3 text-lg"><strong>Local:</strong> Zona Rural / Bairro X, Boa Vista - RR</p>
                         <p class="text-gray-400 text-sm mt-4">
                             Visite nosso campo e sinta a emoção do Airsoft de perto!
                         </p>
-                    </div>
-
-                    <div class="bg-black/40 p-6 rounded-lg shadow-md">
-                        <h3 class="text-2xl font-oswald font-bold text-blue-400 mb-4">Envie sua Mensagem</h3>
-                        <form class="space-y-4">
-                            <div>
-                                <label for="nome" class="block text-gray-300 text-sm font-bold mb-2">Nome:</label>
-                                <input type="text" id="nome" name="nome" class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800" placeholder="Seu Nome Completo">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-gray-300 text-sm font-bold mb-2">Email:</label>
-                                <input type="email" id="email" name="email" class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800" placeholder="seu@email.com">
-                            </div>
-                            <div>
-                                <label for="mensagem" class="block text-gray-300 text-sm font-bold mb-2">Mensagem:</label>
-                                <textarea id="mensagem" name="mensagem" rows="4" class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800" placeholder="Digite sua mensagem aqui..."></textarea>
-                            </div>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition-colors duration-200">
-                                Enviar Mensagem
-                            </button>
-                            <p class="text-sm text-gray-400 mt-2">
-                                *Este formulário é apenas um exemplo visual. Para que ele funcione de verdade, você precisaria de um backend (servidor) para processar as mensagens.
-                            </p>
-                        </form>
                     </div>
                 </div>
             </section>
@@ -467,137 +460,340 @@
     </div>
 
     <script>
-        // --- Hamburglar e Menu Mobile ---
-        const hamburglarBtn = document.getElementById('hamburglarBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        let isOpen = false;
+        // --- 1. Gerenciador de Páginas (showPage refatorado) ---
+        const pageManager = {
+            // Guarda a seção atualmente visível para manter o estado
+            currentPageId: 'home', 
 
-        hamburglarBtn.addEventListener('click', () => {
-            isOpen = !isOpen;
-            hamburglarBtn.classList.toggle('is-open', isOpen);
-            hamburglarBtn.classList.toggle('is-closed', !isOpen);
-            mobileMenu.classList.toggle('-translate-y-full', !isOpen);
-            hamburglarBtn.setAttribute('aria-expanded', isOpen.toString());
-        });
+            // Mapeia IDs de botões para IDs de seções
+            buttonSectionMap: {
+                'nav-home': 'home',
+                'mobile-nav-home': 'home',
+                'nav-sobre': 'sobre',
+                'mobile-nav-sobre': 'sobre',
+                'nav-precos': 'precos',
+                'mobile-nav-precos': 'precos',
+                'call-to-action-precos': 'precos', // Botão "Veja Nossos Preços"
+                'nav-galeria': 'galeria',
+                'mobile-nav-galeria': 'galeria',
+                'nav-faq': 'faq',
+                'mobile-nav-faq': 'faq',
+                'nav-contato': 'contato',
+                'mobile-nav-contato': 'contato'
+            },
 
-        document.addEventListener('click', (e) => {
-            // Evita fechar o menu se o clique for dentro do botão hamburguer ou do próprio menu mobile
-            if (!hamburglarBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                hamburglarBtn.classList.remove('is-open');
-                hamburglarBtn.classList.add('is-closed'); // Garante que a classe 'is-closed' esteja presente
-                mobileMenu.classList.add('-translate-y-full');
-                hamburglarBtn.setAttribute('aria-expanded', 'false');
-                isOpen = false;
-            }
-        });
+            // Inicializa os event listeners para os botões de navegação
+            init: function() {
+                document.querySelectorAll('.nav-button, #call-to-action-precos').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const targetSectionId = this.buttonSectionMap[event.currentTarget.id];
+                        if (targetSectionId) {
+                            this.showPage(targetSectionId);
+                        }
+                    });
+                });
+            },
 
-        // --- Função showPage ---
-        function showPage(id, button) {
-            // Isso esconde todas as seções
-            document.querySelectorAll('main section').forEach(sec => sec.classList.add('hidden'));
-            // isso mostra a seção desejada
-            document.getElementById(id)?.classList.remove('hidden');
+            // Mostra a seção desejada e atualiza o estado dos botões
+            showPage: function(id) {
+                // Esconde todas as seções
+                document.querySelectorAll('main section').forEach(sec => {
+                    sec.classList.add('hidden');
+                    sec.setAttribute('aria-hidden', 'true'); // Acessibilidade: indica que a seção está escondida
+                });
 
-            // isso aqui remove o destaque de todos os botões de navegação
-            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('text-blue-400', 'border-b-2', 'border-blue-400'));
+                // Mostra a seção desejada
+                const targetSection = document.getElementById(id);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                    targetSection.setAttribute('aria-hidden', 'false'); // Acessibilidade: indica que a seção está visível
+                    this.currentPageId = id; // Atualiza a página atual
 
-            // isso aqui vai adicionar destaque ao botão clicado (se for um botão de navegação é claro)
-            if (button && button.classList.contains('nav-button')) {
-                button.classList.add('text-blue-400', 'border-b-2', 'border-blue-400');
-            }
-
-            // Fecha o menu mobile após a seleção
-            mobileMenu.classList.add('-translate-y-full');
-            hamburglarBtn.classList.remove('is-open');
-            hamburglarBtn.classList.add('is-closed');
-            hamburglarBtn.setAttribute('aria-expanded', 'false');
-            isOpen = false;
-        }
-
-        // --- Lógica do Slider de Imagens ---
-        const sliderWrapper = document.getElementById('sliderWrapper');
-        const sliderSlides = document.querySelectorAll('.slider-slide');
-        const prevButton = document.querySelector('.slider-nav .prev');
-        const nextButton = document.querySelector('.slider-nav .next');
-        const sliderDotsContainer = document.getElementById('sliderDots');
-        let currentIndex = 0;
-
-        function createDots() {
-            sliderSlides.forEach((_, index) => {
-                const dot = document.createElement('div');
-                dot.classList.add('slider-dot');
-                if (index === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(index));
-                sliderDotsContainer.appendChild(dot);
-            });
-        }
-
-        function updateDots() {
-            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        function goToSlide(index) {
-            currentIndex = index;
-            if (currentIndex < 0) {
-                currentIndex = sliderSlides.length - 1;
-            } else if (currentIndex >= sliderSlides.length) {
-                currentIndex = 0;
-            }
-            const offset = -currentIndex * 100;
-            sliderWrapper.style.transform = `translateX(${offset}%)`;
-            updateDots();
-        }
-
-        prevButton.addEventListener('click', () => goToSlide(currentIndex - 1));
-        nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
-
-        // Autoplay do slider
-        let slideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000); // Muda a cada 5 segundos
-
-        // Pausa o autoplay ao passar o mouse e retoma ao sair
-        sliderWrapper.parentNode.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        sliderWrapper.parentNode.addEventListener('mouseleave', () => {
-            slideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-        });
-
-        // --- Lógica do Accordion (FAQ) ---
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const item = header.closest('.accordion-item');
-                if (item) {
-                    item.classList.toggle('active');
+                    // Atualiza o destaque dos botões de navegação
+                    this.updateNavButtons(id);
                 }
-            });
-        });
 
-        // --- inicialização da Página ---
-        window.onload = () => {
-            showPage('home', document.querySelector('.nav-button')); // Garante que "Início" é a página padrão
-            createDots(); // Inicializa os dots do slider
+                // Fecha o menu mobile se estiver aberto
+                if (mobileMenuHandler.isOpen) {
+                    mobileMenuHandler.closeMenu();
+                }
+            },
+
+            // Atualiza a classe 'active' e 'aria-current' dos botões de navegação
+            updateNavButtons: function(activeId) {
+                document.querySelectorAll('.nav-button').forEach(button => {
+                    const buttonSectionId = this.buttonSectionMap[button.id];
+                    if (buttonSectionId === activeId) {
+                        button.classList.add('text-blue-400', 'border-b-2', 'border-blue-400');
+                        button.setAttribute('aria-current', 'page');
+                    } else {
+                        button.classList.remove('text-blue-400', 'border-b-2', 'border-blue-400');
+                        button.removeAttribute('aria-current');
+                    }
+                });
+            }
         };
 
-        // --- lógica do modal da galeria ---
-        const imageModal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
+        // --- 2. Gerenciador do Menu Mobile (Hamburguer) ---
+        const mobileMenuHandler = {
+            hamburglarBtn: document.getElementById('hamburglarBtn'),
+            mobileMenu: document.getElementById('mobileMenu'),
+            isOpen: false,
 
-        function openModal(src) {
-            modalImage.src = src;
-            imageModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // isso Evita rolagem do body quando o modal está aberto
-        }
+            init: function() {
+                this.hamburglarBtn.addEventListener('click', this.toggleMenu.bind(this));
+                document.addEventListener('click', this.handleOutsideClick.bind(this));
+                // Listener para redimensionamento, garantindo que o menu mobile se redefina
+                window.addEventListener('resize', this.handleResize.bind(this));
+            },
 
-        function closeModal() {
-            imageModal.classList.add('hidden');
-            document.body.style.overflow = ''; // isso restaura a rolagem do body
-        }
+            toggleMenu: function() {
+                this.isOpen = !this.isOpen;
+                this.hamburglarBtn.classList.toggle('is-open', this.isOpen);
+                this.hamburglarBtn.classList.toggle('is-closed', !this.isOpen);
+                this.mobileMenu.classList.toggle('-translate-y-full', !this.isOpen);
+                this.hamburglarBtn.setAttribute('aria-expanded', this.isOpen.toString());
+                document.body.style.overflow = this.isOpen ? 'hidden' : ''; // Impede rolagem quando o menu está aberto
+            },
 
-        // aqui tu fecha o modal ao clicar fora da imagem
-        imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) {
-                closeModal();
+            closeMenu: function() {
+                if (this.isOpen) {
+                    this.isOpen = false;
+                    this.hamburglarBtn.classList.remove('is-open');
+                    this.hamburglarBtn.classList.add('is-closed');
+                    this.mobileMenu.classList.add('-translate-y-full');
+                    this.hamburglarBtn.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            },
+
+            handleOutsideClick: function(event) {
+                if (this.isOpen && !this.hamburglarBtn.contains(event.target) && !this.mobileMenu.contains(event.target)) {
+                    this.closeMenu();
+                }
+            },
+
+            handleResize: function() {
+                // Se a tela for maior que MD (768px), garante que o menu mobile esteja fechado e com overflow normal
+                if (window.innerWidth >= 768 && this.isOpen) {
+                    this.closeMenu();
+                }
             }
+        };
+
+        // --- 3. Gerenciador do Slider de Imagens ---
+        const imageSlider = {
+            sliderWrapper: document.getElementById('sliderWrapper'),
+            sliderSlides: document.querySelectorAll('.slider-slide'),
+            prevButton: document.querySelector('.slider-nav .prev'),
+            nextButton: document.querySelector('.slider-nav .next'),
+            sliderDotsContainer: document.getElementById('sliderDots'),
+            currentIndex: 0,
+            slideInterval: null, // Variável para armazenar o ID do intervalo do autoplay
+            autoplayDelay: 5000, // 5 segundos
+
+            init: function() {
+                if (!this.sliderWrapper || this.sliderSlides.length === 0) return;
+
+                this.createDots();
+                this.updateSlider(); // Atualiza a posição inicial e os dots
+                this.startAutoplay();
+
+                this.prevButton.addEventListener('click', this.prevSlide.bind(this));
+                this.nextButton.addEventListener('click', this.nextSlide.bind(this));
+
+                // Pausa o autoplay ao passar o mouse sobre o container do slider
+                this.sliderWrapper.parentNode.addEventListener('mouseenter', this.stopAutoplay.bind(this));
+                // Retoma o autoplay ao tirar o mouse
+                this.sliderWrapper.parentNode.addEventListener('mouseleave', this.startAutoplay.bind(this));
+            },
+
+            createDots: function() {
+                this.sliderSlides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('slider-dot');
+                    dot.setAttribute('role', 'button');
+                    dot.setAttribute('aria-label', `Ir para slide ${index + 1}`);
+                    if (index === 0) {
+                        dot.classList.add('active');
+                        dot.setAttribute('aria-current', 'true');
+                    }
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    this.sliderDotsContainer.appendChild(dot);
+                });
+            },
+
+            updateDots: function() {
+                document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                    if (index === this.currentIndex) {
+                        dot.classList.add('active');
+                        dot.setAttribute('aria-current', 'true');
+                    } else {
+                        dot.classList.remove('active');
+                        dot.removeAttribute('aria-current');
+                    }
+                });
+            },
+
+            goToSlide: function(index) {
+                this.currentIndex = index;
+                if (this.currentIndex < 0) {
+                    this.currentIndex = this.sliderSlides.length - 1;
+                } else if (this.currentIndex >= this.sliderSlides.length) {
+                    this.currentIndex = 0;
+                }
+                const offset = -this.currentIndex * 100;
+                this.sliderWrapper.style.transform = `translateX(${offset}%)`;
+                this.updateDots();
+            },
+
+            prevSlide: function() {
+                this.goToSlide(this.currentIndex - 1);
+            },
+
+            nextSlide: function() {
+                this.goToSlide(this.currentIndex + 1);
+            },
+
+            startAutoplay: function() {
+                this.stopAutoplay(); // Garante que não haja múltiplos intervalos rodando
+                this.slideInterval = setInterval(() => this.nextSlide(), this.autoplayDelay);
+            },
+
+            stopAutoplay: function() {
+                if (this.slideInterval) {
+                    clearInterval(this.slideInterval);
+                    this.slideInterval = null;
+                }
+            },
+
+            updateSlider: function() {
+                // Posiciona o slider na primeira imagem e atualiza os dots na inicialização
+                this.goToSlide(this.currentIndex);
+            }
+        };
+
+        // --- 4. Gerenciador do FAQ (Accordion) ---
+        const accordionHandler = {
+            init: function() {
+                document.querySelectorAll('.accordion-header').forEach(header => {
+                    header.addEventListener('click', this.toggleAccordion.bind(this));
+                    // Adiciona suporte a teclado para acessibilidade
+                    header.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault(); // Evita a rolagem da página ao pressionar espaço
+                            this.toggleAccordion(event);
+                        }
+                    });
+                });
+            },
+
+            toggleAccordion: function(event) {
+                const header = event.currentTarget;
+                const item = header.closest('.accordion-item');
+                if (!item) return; // Garante que o item existe
+
+                const content = item.querySelector('.accordion-content');
+                if (!content) return; // Garante que o conteúdo existe
+
+                const isActive = item.classList.contains('active');
+
+                // Fecha todos os outros acordeões abertos, exceto o clicado
+                document.querySelectorAll('.accordion-item.active').forEach(openItem => {
+                    if (openItem !== item) {
+                        openItem.classList.remove('active');
+                        openItem.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+                        // Resetar os estilos diretamente
+                        openItem.querySelector('.accordion-content').style.maxHeight = '0';
+                        openItem.querySelector('.accordion-content').style.paddingTop = '0';
+                        openItem.querySelector('.accordion-content').style.paddingBottom = '0';
+                    }
+                });
+
+                // Abre ou fecha o acordeão clicado
+                if (isActive) {
+                    item.classList.remove('active');
+                    header.setAttribute('aria-expanded', 'false');
+                    content.style.maxHeight = '0';
+                    content.style.paddingTop = '0';
+                    content.style.paddingBottom = '0';
+                } else {
+                    item.classList.add('active');
+                    header.setAttribute('aria-expanded', 'true');
+                    
+                    // Primeiro, defina os paddings desejados para que o scrollHeight os inclua.
+                    content.style.paddingTop = '1rem';
+                    content.style.paddingBottom = '1rem';
+
+                    // Agora, defina o maxHeight com base no scrollHeight ATUALIZADO (com o padding)
+                    content.style.maxHeight = content.scrollHeight + 'px';
+
+                    // Opcional: Remover o maxHeight após a transição para que ele se ajuste automaticamente
+                    // a futuras mudanças de conteúdo, se necessário.
+                    content.addEventListener('transitionend', function handler() {
+                        if (item.classList.contains('active')) { // Apenas remove se ainda estiver ativo
+                            content.style.maxHeight = 'fit-content'; // ou 'none'
+                        }
+                        content.removeEventListener('transitionend', handler);
+                    });
+                }
+            }
+        };
+
+        // --- 5. Gerenciador do Modal da Galeria ---
+        const galleryModal = {
+            imageModal: document.getElementById('imageModal'),
+            modalImage: document.getElementById('modalImage'),
+
+            init: function() {
+                document.querySelectorAll('#galeria img').forEach(img => {
+                    img.addEventListener('click', this.open.bind(this));
+                    img.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            this.open(event);
+                        }
+                    });
+                });
+                // Fecha o modal ao clicar fora da imagem ou pressionar ESC
+                this.imageModal.addEventListener('click', (e) => {
+                    if (e.target === this.imageModal) {
+                        this.close();
+                    }
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !this.imageModal.classList.contains('hidden')) {
+                        this.close();
+                    }
+                });
+            },
+
+            open: function(event) {
+                const imgElement = event.currentTarget;
+                const fullSrc = imgElement.getAttribute('data-full-src'); // Pega a URL da imagem grande
+                this.modalImage.src = fullSrc;
+                this.modalImage.alt = imgElement.alt; // Copia o alt da imagem original
+                this.imageModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Evita rolagem do body
+                this.imageModal.focus(); // Coloca o foco no modal para acessibilidade
+            },
+
+            close: function() {
+                this.imageModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restaura a rolagem do body
+            }
+        };
+
+        // --- Inicialização de todos os módulos quando o DOM estiver pronto ---
+        document.addEventListener('DOMContentLoaded', () => {
+            pageManager.init();
+            mobileMenuHandler.init();
+            imageSlider.init();
+            accordionHandler.init();
+            galleryModal.init();
+
+            // Define a página inicial padrão após a inicialização dos módulos
+            pageManager.showPage('home');
         });
     </script>
 </body>
